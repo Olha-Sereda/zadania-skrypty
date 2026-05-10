@@ -6,7 +6,7 @@ To repozytorium zawiera różne zadania w osobnych folderach.
 
 - `bash/` — Zadanie 1: gra kółko i krzyżyk w Bashu
   - 3.0: tryb gry turowej — zrobione
-  - 4.0: zapis i odtwarzanie przerwanej gry (save game) — do zrobienia
+  - 4.0: zapis i odtwarzanie przerwanej gry (save game) — zrobione
   - 5.0: gra z komputerem — do zrobienia
   - Instrukcja uruchomienia: `bash/README.md`
 

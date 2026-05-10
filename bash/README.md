@@ -31,9 +31,26 @@ bash game.sh
 - `a` — lewo
 - `d` — prawo
 - `spacja` — postaw znak
+- `p` — zapisz grę (save)
+- `l` — wczytaj grę (load)
 - `q` — wyjście z gry
 
 ## Zasady / tryb gry (3.0)
 
 - Gra jest turowa (2 graczy na jednej klawiaturze): X oraz O.
 - Po wygranej lub remisie pojawia się pytanie o ponowną grę (`y/n`).
+
+## Zapis i odtwarzanie gry (4.0)
+
+- Zapis gry: naciśnij `p` w trakcie rozgrywki.
+- Wczytanie gry: naciśnij `l` w trakcie rozgrywki.
+- Przy starcie gry, jeśli zapis istnieje, skrypt zapyta czy go wczytać.
+
+Domyślnie zapis jest trzymany obok skryptu jako plik `.tictactoe.save`.
+
+Możesz zmienić lokalizację pliku zapisu przez zmienną środowiskową `SAVE_FILE`, np.:
+
+```bash
+cd bash
+SAVE_FILE="$PWD/my-save.txt" ./game.sh
+```

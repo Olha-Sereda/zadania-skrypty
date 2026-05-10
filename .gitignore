@@ -23,3 +23,7 @@ pnpm-debug.log*
 .DS_Store
 .vscode/
 .idea/
+
+# Game saves
+bash/.tictactoe.save
+.tictactoe.save
