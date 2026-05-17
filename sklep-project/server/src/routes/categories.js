@@ -1,27 +1,31 @@
-const express = require('express');
+const express = require("express");
+const pool = require("../config/db");
 
 const router = express.Router();
 
-const categories = [
-  { id: 1, name: 'Elektronika' },
-  { id: 2, name: 'Ksiazki' },
-  { id: 3, name: 'Dom' },
-];
-
-const products = [
-  { id: 1, name: 'Sluchawki Pro', description: 'Bezprzewodowe sluchawki z ANC', price: 299.99, stock: 20, category_id: 1, image_url: '' },
-  { id: 2, name: 'Node.js dla kazdego', description: 'Praktyczny przewodnik po Node.js', price: 89.99, stock: 50, category_id: 2, image_url: '' },
-  { id: 3, name: 'Lampa biurkowa', description: 'Nowoczesna lampa LED', price: 129.00, stock: 35, category_id: 3, image_url: '' },
-];
-
-router.get('/', (req, res) => {
-  return res.json(categories);
+router.get("/", async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT id, name FROM categories ORDER BY id",
+    );
+    return res.json(result.rows);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 });
 
-router.get('/:id/products', (req, res) => {
-  const categoryId = Number(req.params.id);
-  const result = products.filter((p) => p.category_id === categoryId);
-  return res.json(result);
+router.get("/:id/products", async (req, res) => {
+  try {
+    const categoryId = Number(req.params.id);
+    const result = await pool.query(
+      `SELECT id, name, description, price, stock, category_id, image_url
+       FROM products WHERE category_id = $1 ORDER BY id`,
+      [categoryId],
+    );
+    return res.json(result.rows);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 });
 
 module.exports = router;
