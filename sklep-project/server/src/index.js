@@ -3,6 +3,8 @@ const dotenv = require("dotenv");
 const authRoutes = require("./routes/auth");
 const categoriesRoutes = require("./routes/categories");
 const productRoutes = require("./routes/products");
+const cartRoutes = require("./routes/cart");
+const ordersRoutes = require("./routes/orders");
 const initDb = require("./scripts/initDbRuntime");
 
 dotenv.config();
@@ -19,6 +21,8 @@ app.get("/api/health", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoriesRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/orders", ordersRoutes);
 
 initDb()
   .then(() => {
