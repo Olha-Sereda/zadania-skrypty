@@ -1,12 +1,15 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import axiosClient from '../api/axiosClient';
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import axiosClient from "../api/axiosClient";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    axiosClient.get('/orders').then(({ data }) => setOrders(data)).catch(() => {});
+    axiosClient
+      .get("/orders")
+      .then(({ data }) => setOrders(data))
+      .catch(() => {});
   }, []);
 
   return (
@@ -18,13 +21,17 @@ export default function OrdersPage() {
           <Link
             key={order.id}
             to={`/orders/${order.id}`}
-            className="block bg-white border border-black/10 rounded-2xl p-4 hover:shadow-md"
+            className="block bg-white border border-[#ED9B40]/30 rounded-2xl p-4 hover:shadow-md"
           >
             <div className="flex justify-between">
               <span className="font-bold">Zamowienie #{order.id}</span>
-              <span className="font-semibold">{Number(order.total).toFixed(2)} zl</span>
+              <span className="font-semibold">
+                {Number(order.total).toFixed(2)} zl
+              </span>
             </div>
-            <p className="text-sm text-black/60">{new Date(order.created_at).toLocaleString('pl-PL')}</p>
+            <p className="text-sm text-black/60">
+              {new Date(order.created_at).toLocaleString("pl-PL")}
+            </p>
           </Link>
         ))}
       </div>

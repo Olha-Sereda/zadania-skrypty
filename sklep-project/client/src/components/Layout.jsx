@@ -1,18 +1,18 @@
 import { Link, NavLink } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 
 function navClass({ isActive }) {
   return isActive
-    ? "text-white bg-black px-3 py-1 rounded-full"
-    : "text-black px-3 py-1";
+    ? "text-white bg-[#61C9A8] px-3 py-1 rounded-full"
+    : "text-black hover:text-[#61C9A8] px-3 py-1";
 }
 
 export default function Layout({ children }) {
   const { user, isAuthenticated, logout } = useAuth();
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#ffd39b,_#f6f2ec_60%)] text-zinc-900">
-      <header className="border-b border-black/10 backdrop-blur sticky top-0 bg-[#f6f2ec]/90 z-20">
+    <div className="min-h-screen bg-[#FFEEDB] text-black">
+      <header className="border-b border-[#ED9B40]/30 sticky top-0 bg-white z-20">
         <div className="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-2">
           <Link to="/" className="font-black tracking-tight text-xl">
             Sklep React + Node
@@ -39,7 +39,7 @@ export default function Layout({ children }) {
             )}
             {isAuthenticated && (
               <button
-                className="px-3 py-1 border border-black rounded-full hover:bg-black hover:text-white"
+                className="px-3 py-1 border border-[#61C9A8] text-[#61C9A8] rounded-full hover:bg-[#61C9A8] hover:text-white"
                 onClick={logout}
               >
                 Wyloguj
