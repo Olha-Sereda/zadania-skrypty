@@ -36,7 +36,7 @@ Kod: [Link do zadania 2](https://github.com/Olha-Sereda/zadania-skrypty/tree/mai
 
 Czatbot restauracji z lokalnym modelem językowym (Ollama + `llama3.2`, klient `ollama` w Pythonie).
 
-✅ 3.0 Czatbot rozpoznaje 3 intencje (powitanie, menu, zamówienie), każdą w co najmniej 3 sformułowaniach — dzięki promptowi systemowemu
+✅ 3.0 Czatbot rozpoznaje 3 intencje (powitanie, menu, zamówienie), każdą w co najmniej 3 sformułowaniach — dzięki promptowi systemowemu [Link do commita 1](https://github.com/Olha-Sereda/zadania-skrypty/commit/9511d0a)
 
 ⏳ 3.5 Godziny otwarcia i menu z pliku konfiguracyjnego (JSON/YAML)
 
