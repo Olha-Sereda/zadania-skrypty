@@ -1,0 +1,15 @@
+# Wirtualne środowisko Pythona
+venv/
+.venv/
+
+# Cache Pythona
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.vscode/
+.idea/
+
+# System
+.DS_Store

@@ -13,6 +13,9 @@ To repozytorium zawiera różne zadania w osobnych folderach.
 - `sklep-project/` — projekt „Sklep” (React + Node + PostgreSQL)
   - Instrukcje: `sklep-project/README.md`
 
+- `python-llm/` — Zadanie 3: Czatbot z lokalnym modelem językowym (Ollama + Python)
+  - Instrukcja uruchomienia: `python-llm/README.md`
+
 ## Zadanie 2 Sklep
 
 Sklep w ReactJS + NodeJS
@@ -28,3 +31,19 @@ Sklep w ReactJS + NodeJS
 ✅ 5.0 Konfiguracja CORS po stronie NodeJS + konfiguracja po stronie ReactJS [Link do commita 5](https://github.com/Olha-Sereda/zadania-skrypty/commit/d74a7c9)
 
 Kod: [Link do zadania 2](https://github.com/Olha-Sereda/zadania-skrypty/tree/main/sklep-project)
+
+## Zadanie 3 Python LLM
+
+Czatbot restauracji z lokalnym modelem językowym (Ollama + `llama3.2`, klient `ollama` w Pythonie).
+
+✅ 3.0 Czatbot rozpoznaje 3 intencje (powitanie, menu, zamówienie), każdą w co najmniej 3 sformułowaniach — dzięki promptowi systemowemu
+
+⏳ 3.5 Godziny otwarcia i menu z pliku konfiguracyjnego (JSON/YAML)
+
+⏳ 4.0 Dane (alergie, składniki, dania) z API aplikacji Flask
+
+⏳ 4.5 Estymacja czasu odbioru zamówienia
+
+⏳ 5.0 Adres dostawy + zapis zamówienia w bazie przez API Flask
+
+Kod: [Link do zadania 3](https://github.com/Olha-Sereda/zadania-skrypty/tree/main/python-llm)
