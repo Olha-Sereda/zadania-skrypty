@@ -1,0 +1,49 @@
+restaurant:
+  name: "Lviv Croissants"
+
+currency: "PLN"
+
+opening_hours:
+  monday: "08:00 - 22:00"
+  tuesday: "08:00 - 22:00"
+  wednesday: "08:00 - 22:00"
+  thursday: "08:00 - 22:00"
+  friday: "08:00 - 23:00"
+  saturday: "10:00 - 23:00"
+  sunday: "10:00 - 22:00"
+
+menu:
+  - category: "Sweet croissants"
+    items:
+      - name: "Chocolate croissant"
+        price: 15
+      - name: "Nutella & banana croissant"
+        price: 17
+      - name: "Apple & cinnamon croissant"
+        price: 16
+      - name: "Raspberry croissant"
+        price: 16
+
+  - category: "Savory croissants"
+    items:
+      - name: "Ham & cheese croissant"
+        price: 19
+      - name: "Chicken Caesar croissant"
+        price: 23
+      - name: "Salmon & cream cheese croissant"
+        price: 25
+      - name: "Mushroom & cheese croissant"
+        price: 21
+
+  - category: "Drinks"
+    items:
+      - name: "Espresso"
+        price: 10
+      - name: "Cappuccino"
+        price: 14
+      - name: "Latte"
+        price: 15
+      - name: "Hot chocolate"
+        price: 16
+      - name: "Lemonade"
+        price: 14

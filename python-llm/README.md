@@ -8,7 +8,8 @@ Czatbot kawiarni "Lviv Croissants" oparty o **lokalny** model językowy
 - ✅ **3.0** — Czatbot rozpoznaje 3 intencje (powitanie, menu, zamówienie),
   każdą w co najmniej 3 sformułowaniach. Cała "wiedza" pochodzi z promptu
   systemowego — bez sztywnych regułek.
-- ⏳ 3.5 — godziny otwarcia + menu z pliku JSON/YAML (kolejny krok).
+- ✅ **3.5** — menu i godziny otwarcia ładowane z `config.yaml` i wstrzykiwane
+  do promptu systemowego przy starcie.
 - ⏳ 4.0 — dane (alergie, składniki) z API Flaska.
 - ⏳ 4.5 — estymacja czasu odbioru.
 - ⏳ 5.0 — adres dostawy + zapis zamówienia w bazie przez Flask.
@@ -111,6 +112,9 @@ Sweet croissants:
 - Nutella & banana croissant — 17 PLN
 ...
 
+You: When are you open on Sunday?
+Bot: On Sunday we are open from 09:00 to 21:00.
+
 You: I'd like a chocolate croissant and a latte
 Bot: Order confirmed: Chocolate croissant (15 PLN) + Latte (15 PLN). Total: 30 PLN.
 ```
@@ -119,23 +123,57 @@ Zakończenie rozmowy: `exit` lub `Ctrl+C`.
 
 ---
 
-## Jak to działa (zakres 3.0)
+## Jak to działa
 
-Cała "inteligencja" rozpoznawania intencji siedzi w stałej `SYSTEM_PROMPT`
+### Zakres 3.0 — prompt systemowy
+
+Cała "inteligencja" rozpoznawania intencji siedzi w stałej `PROMPT_TEMPLATE`
 w pliku `chatbot.py`. Tam:
 
-1. mówimy modelowi, **kim jest** (asystent restauracji),
+1. mówimy modelowi, **kim jest** (asystent kawiarni),
 2. wymieniamy **3 intencje** wraz z przykładami sformułowań,
-3. dajemy mu **menu** (na sztywno — w 3.5 przeniesiemy je do pliku konfiguracyjnego).
+3. wstrzykujemy **menu i godziny otwarcia** z pliku konfiguracyjnego.
 
 Każda wiadomość użytkownika trafia do listy `history`, którą wysyłamy w całości
 do modelu — dzięki temu rozmowa "pamięta" wcześniejsze wypowiedzi.
+
+### Zakres 3.5 — konfiguracja w `config.yaml`
+
+Dane biznesowe (nazwa kawiarni, godziny otwarcia, menu, waluta) trzymamy
+w pliku `config.yaml`. Możesz je edytować bez dotykania kodu Pythona.
+
+Struktura pliku:
+
+```yaml
+restaurant:
+  name: "Lviv Croissants"
+
+currency: "PLN"
+
+opening_hours:
+  monday: "08:00 - 22:00"
+  ...
+
+menu:
+  - category: "Sweet croissants"
+    items:
+      - name: "Chocolate croissant"
+        price: 15
+  ...
+```
+
+Przy starcie programu funkcja `load_config()` czyta plik, a `build_system_prompt()`
+wypisuje menu i godziny otwarcia do szablonu promptu. Dodanie nowego dania
+to teraz **3 linijki w YAML-u**, bez restartu Ollamy ani zmiany kodu.
 
 ## Najczęstsze problemy
 
 - **`Connection refused`** — nie uruchomiłaś `ollama serve`.
 - **`model 'llama3.2' not found`** — zapomniany `ollama pull llama3.2`.
 - **`command not found: python`** — używaj `python3` na macOS.
-- **Model odpowiada po angielsku** — wyślij wiadomość po polsku, prompt
-  systemowy go przekierowuje. Jeśli problem zostaje, można w prompcie
-  jeszcze mocniej podkreślić "Odpowiadaj WYŁĄCZNIE po polsku".
+- **Model odpowiada po polsku zamiast po angielsku** — prompt jasno mówi
+  "reply in English". Jeśli błąd powraca, sprawdź czy plik `chatbot.py`
+  został zapisany.
+- **`FileNotFoundError: config.yaml`** — plik `config.yaml` musi leżeć obok
+  `chatbot.py` (ścieżka jest wyliczana przez `Path(__file__).parent`, więc
+  CWD nie ma znaczenia — liczy się tylko lokalizacja samego skryptu).
