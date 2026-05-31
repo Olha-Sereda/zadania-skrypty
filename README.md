@@ -38,7 +38,7 @@ Czatbot restauracji z lokalnym modelem językowym (Ollama + `llama3.2`, klient `
 
 ✅ 3.0 Czatbot rozpoznaje 3 intencje (powitanie, menu, zamówienie), każdą w co najmniej 3 sformułowaniach — dzięki promptowi systemowemu [Link do commita 1](https://github.com/Olha-Sereda/zadania-skrypty/commit/9511d0a)
 
-⏳ 3.5 Godziny otwarcia i menu z pliku konfiguracyjnego (JSON/YAML)
+✅ 3.5 Godziny otwarcia i menu z pliku konfiguracyjnego (YAML) [Link do commita 2](https://github.com/Olha-Sereda/zadania-skrypty/commit/49894ba)
 
 ⏳ 4.0 Dane (alergie, składniki, dania) z API aplikacji Flask
 
