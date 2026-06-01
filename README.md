@@ -40,7 +40,7 @@ Czatbot restauracji z lokalnym modelem językowym (Ollama + `llama3.2`, klient `
 
 ✅ 3.5 Godziny otwarcia i menu z pliku konfiguracyjnego (YAML) [Link do commita 2](https://github.com/Olha-Sereda/zadania-skrypty/commit/49894ba)
 
-⏳ 4.0 Dane (alergie, składniki, dania) z API aplikacji Flask
+✅ 4.0 Dane (alergie, składniki, dania) z API aplikacji Flask + obsługa modyfikacji zamówień [Link do commita 3](https://github.com/Olha-Sereda/zadania-skrypty/commit/8ae7e76)
 
 ⏳ 4.5 Estymacja czasu odbioru zamówienia
 
