@@ -1,0 +1,106 @@
+[
+  {
+    "id": 1,
+    "name": "Chocolate croissant",
+    "category": "Sweet croissants",
+    "price": 15,
+    "ingredients": ["croissant dough", "dark chocolate", "butter", "sugar"],
+    "allergens": ["gluten", "dairy", "eggs"]
+  },
+  {
+    "id": 2,
+    "name": "Nutella & banana croissant",
+    "category": "Sweet croissants",
+    "price": 17,
+    "ingredients": ["croissant dough", "Nutella", "banana", "butter"],
+    "allergens": ["gluten", "dairy", "eggs", "nuts"]
+  },
+  {
+    "id": 3,
+    "name": "Apple & cinnamon croissant",
+    "category": "Sweet croissants",
+    "price": 16,
+    "ingredients": ["croissant dough", "apples", "cinnamon", "sugar", "butter"],
+    "allergens": ["gluten", "dairy", "eggs"]
+  },
+  {
+    "id": 4,
+    "name": "Raspberry croissant",
+    "category": "Sweet croissants",
+    "price": 16,
+    "ingredients": ["croissant dough", "raspberry jam", "butter", "powdered sugar"],
+    "allergens": ["gluten", "dairy", "eggs"]
+  },
+  {
+    "id": 5,
+    "name": "Ham & cheese croissant",
+    "category": "Savory croissants",
+    "price": 19,
+    "ingredients": ["croissant dough", "ham", "cheddar cheese", "butter"],
+    "allergens": ["gluten", "dairy", "eggs"]
+  },
+  {
+    "id": 6,
+    "name": "Chicken Caesar croissant",
+    "category": "Savory croissants",
+    "price": 23,
+    "ingredients": ["croissant dough", "grilled chicken", "romaine lettuce", "parmesan", "Caesar dressing"],
+    "allergens": ["gluten", "dairy", "eggs", "fish"]
+  },
+  {
+    "id": 7,
+    "name": "Salmon & cream cheese croissant",
+    "category": "Savory croissants",
+    "price": 25,
+    "ingredients": ["croissant dough", "smoked salmon", "cream cheese", "dill", "capers"],
+    "allergens": ["gluten", "dairy", "eggs", "fish"]
+  },
+  {
+    "id": 8,
+    "name": "Mushroom & cheese croissant",
+    "category": "Savory croissants",
+    "price": 21,
+    "ingredients": ["croissant dough", "sauteed mushrooms", "mozzarella", "garlic", "butter"],
+    "allergens": ["gluten", "dairy", "eggs"]
+  },
+  {
+    "id": 9,
+    "name": "Espresso",
+    "category": "Drinks",
+    "price": 10,
+    "ingredients": ["arabica coffee beans", "water"],
+    "allergens": []
+  },
+  {
+    "id": 10,
+    "name": "Cappuccino",
+    "category": "Drinks",
+    "price": 14,
+    "ingredients": ["espresso", "steamed milk", "milk foam"],
+    "allergens": ["dairy"]
+  },
+  {
+    "id": 11,
+    "name": "Latte",
+    "category": "Drinks",
+    "price": 15,
+    "ingredients": ["espresso", "steamed milk"],
+    "allergens": ["dairy"]
+  },
+  {
+    "id": 12,
+    "name": "Hot chocolate",
+    "category": "Drinks",
+    "price": 16,
+    "ingredients": ["cocoa", "milk", "sugar"],
+    "allergens": ["dairy"]
+  },
+  {
+    "id": 13,
+    "name": "Lemonade",
+    "category": "Drinks",
+    "price": 14,
+    "ingredients": ["water", "lemon juice", "sugar", "mint"],
+    "allergens": []
+  }
+]

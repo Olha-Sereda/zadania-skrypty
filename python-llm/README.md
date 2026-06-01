@@ -8,9 +8,11 @@ Czatbot kawiarni "Lviv Croissants" oparty o **lokalny** model językowy
 - ✅ **3.0** — Czatbot rozpoznaje 3 intencje (powitanie, menu, zamówienie),
   każdą w co najmniej 3 sformułowaniach. Cała "wiedza" pochodzi z promptu
   systemowego — bez sztywnych regułek.
-- ✅ **3.5** — menu i godziny otwarcia ładowane z `config.yaml` i wstrzykiwane
-  do promptu systemowego przy starcie.
-- ⏳ 4.0 — dane (alergie, składniki) z API Flaska.
+- ✅ **3.5** — godziny otwarcia ładowane z `config.yaml` i wstrzykiwane do
+  promptu systemowego przy starcie. (Menu było w YAML-u; w 4.0 przeniesione do API.)
+- ✅ **4.0** — dane o daniach (skład, alergeny, ceny) ciągnięte z lokalnego
+  API Flaska. Czatbot odpowiada na pytania o alergeny i akceptuje modyfikacje
+  zamówienia ("bez sera", "z mlekiem owsianym").
 - ⏳ 4.5 — estymacja czasu odbioru.
 - ⏳ 5.0 — adres dostawy + zapis zamówienia w bazie przez Flask.
 
@@ -89,34 +91,53 @@ Po aktywacji w terminalu pojawi się prefix `(venv)`. Aby wyjść: `deactivate`.
 pip install -r requirements.txt
 ```
 
+W `requirements.txt` są wszystkie pakiety potrzebne **zarówno czatbotowi, jak
+i Flaskowi** (jedno wspólne `venv`).
+
 ---
 
-## Uruchomienie czatbota
+## Uruchomienie (potrzebujesz **dwóch** terminałi)
 
-Upewnij się, że `ollama serve` działa w tle, potem:
+Od zakresu 4.0 czatbot ciągnie dane o daniach z lokalnego API Flaska, więc
+oba serwery muszą działać jednocześnie.
+
+### Terminal 1 — Ollama
 
 ```bash
+ollama serve
+```
+
+### Terminal 2 — Flask API
+
+```bash
+cd python-llm
+source venv/bin/activate
+cd flask-api
+python app.py            # http://127.0.0.1:5000
+```
+
+### Terminal 3 — Czatbot
+
+```bash
+cd python-llm
+source venv/bin/activate
 python chatbot.py
 ```
 
-Przykładowa rozmowa (bot odpowiada po angielsku — `llama3.2` ma słaby polski):
+Przykładowa rozmowa (zakres 4.0):
 
 ```
 You: Hello
 Bot: Hi! Welcome to Lviv Croissants. Would you like to see the menu or place an order?
 
-You: What's on the menu?
-Bot: Here is our menu:
-Sweet croissants:
-- Chocolate croissant — 15 PLN
-- Nutella & banana croissant — 17 PLN
-...
+You: Does the chicken Caesar croissant contain gluten?
+Bot: Yes, it contains gluten. Listed allergens: gluten, dairy, eggs, fish.
 
-You: When are you open on Sunday?
-Bot: On Sunday we are open from 09:00 to 21:00.
-
-You: I'd like a chocolate croissant and a latte
-Bot: Order confirmed: Chocolate croissant (15 PLN) + Latte (15 PLN). Total: 30 PLN.
+You: I'll take it without sauce, plus a latte with oat milk
+Bot: Order confirmed:
+  - Chicken Caesar croissant (no Caesar dressing) — 23 PLN
+  - Latte (oat milk) — 15 PLN
+  Total: 38 PLN.
 ```
 
 Zakończenie rozmowy: `exit` lub `Ctrl+C`.
@@ -139,32 +160,33 @@ do modelu — dzięki temu rozmowa "pamięta" wcześniejsze wypowiedzi.
 
 ### Zakres 3.5 — konfiguracja w `config.yaml`
 
-Dane biznesowe (nazwa kawiarni, godziny otwarcia, menu, waluta) trzymamy
-w pliku `config.yaml`. Możesz je edytować bez dotykania kodu Pythona.
+Dane statyczne kawiarni (nazwa, godziny otwarcia, waluta, URL API) trzymamy
+w `config.yaml`. Funkcja `load_config()` czyta plik, a `build_system_prompt()`
+wstrzykuje godziny otwarcia do szablonu promptu.
 
-Struktura pliku:
+### Zakres 4.0 — dania z API Flaska
 
-```yaml
-restaurant:
-  name: "Lviv Croissants"
+Dane dynamiczne (dania, składniki, alergeny, ceny) dostały własny serwis:
+**Flask API** w `flask-api/`. Plik `flask-api/data.json` to baza danych
+(jeszcze plikowa — w 5.0 podmienimy na prawdziwą bazę).
 
-currency: "PLN"
+Przepływ przy starcie czatbota:
 
-opening_hours:
-  monday: "08:00 - 22:00"
-  ...
+1. `chatbot.py` czyta `config.yaml` (URL API + godziny otwarcia).
+2. Wykonuje `GET http://127.0.0.1:5000/api/dishes` (przez `requests`).
+3. Buduje prompt systemowy ze szczegółami każdego dania:
 
-menu:
-  - category: "Sweet croissants"
-    items:
-      - name: "Chocolate croissant"
-        price: 15
-  ...
-```
+   ```
+   - Chicken Caesar croissant — 23 PLN
+       ingredients: croissant dough, grilled chicken, romaine lettuce, parmesan, Caesar dressing
+       allergens: gluten, dairy, eggs, fish
+   ```
 
-Przy starcie programu funkcja `load_config()` czyta plik, a `build_system_prompt()`
-wypisuje menu i godziny otwarcia do szablonu promptu. Dodanie nowego dania
-to teraz **3 linijki w YAML-u**, bez restartu Ollamy ani zmiany kodu.
+4. Dzięki temu model potrafi odpowiedzieć na pytania typu
+   _"Czy ten croissant zawiera gluten?"_ oraz przyjąć modyfikacje
+   typu _"bez sosu, z mlekiem owsianym"_ w zamówieniu.
+
+Więcej o samym API: zobacz `flask-api/README.md`.
 
 ## Najczęstsze problemy
 
@@ -177,3 +199,6 @@ to teraz **3 linijki w YAML-u**, bez restartu Ollamy ani zmiany kodu.
 - **`FileNotFoundError: config.yaml`** — plik `config.yaml` musi leżeć obok
   `chatbot.py` (ścieżka jest wyliczana przez `Path(__file__).parent`, więc
   CWD nie ma znaczenia — liczy się tylko lokalizacja samego skryptu).
+- **`Cannot reach Flask API at http://127.0.0.1:5000`** — nie odpaliony
+  serwer Flask. Zobacz `flask-api/README.md` lub po prostu uruchom
+  `cd flask-api && python app.py` w drugim terminalu.

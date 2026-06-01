@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import ollama
+import requests
 import yaml
 
 
@@ -19,22 +20,26 @@ You recognize exactly 3 intents:
    Response: greet warmly and ask how you can help (e.g. offer to show the
    menu or take an order).
 
-2) MENU — when the user asks to see the offer.
+2) MENU — when the user asks to see the offer or asks about a specific dish
+   (ingredients, allergens, dietary info).
    Example phrasings: "What's on the menu?", "Show me the card",
-   "What do you serve?", "What can I order?", "Give me the list of dishes".
-   Response: list the menu items as a clean bullet list with prices.
+   "Does the chicken croissant contain gluten?", "What's in the lemonade?",
+   "Is the espresso vegan?".
+   Response: list the menu items with prices, OR answer the specific
+   ingredient/allergen question using ONLY the data provided below.
 
-3) ORDER — when the user wants to order something.
+3) ORDER — when the user wants to order something, possibly with modifications.
    Example phrasings: "I'd like a chocolate croissant", "A latte please",
-   "I'll have a ham & cheese croissant", "I'm ordering a cappuccino",
-   "Hot chocolate for me".
-   Response: confirm the order, repeat what was ordered, and give the
-   approximate total price.
+   "I'll have a ham & cheese croissant without cheese", "Cappuccino with oat milk",
+   "Hot chocolate, but make it sugar-free".
+   Response: confirm the order, repeat what was ordered (including any
+   modifications the user requested), and give the approximate total price.
+   Modifications do not change the price.
 
 Opening hours of "{name}":
 {hours}
 
-"{name}" menu (loaded from config.yaml):
+"{name}" menu (loaded from the Flask API at {api_base}):
 {menu}
 
 Rules:
@@ -43,11 +48,16 @@ Rules:
 - Never invent dishes that are not on the menu above.
 - Always reply in English, even if the user writes in another language.
 - If the user asks about opening hours, answer using the hours listed above.
-- IMPORTANT: do NOT discuss delivery, pickup, table reservations, allergies,
-  or anything beyond the 3 intents and opening hours — those features will
-  come later.
-- After an order, only confirm the items and the total. Do not ask about
-  delivery, pickup, payment, or anything else.
+- For allergen / ingredient questions, answer ONLY based on the data above.
+  If the data does not list a specific allergen for a dish, say it is not
+  listed — do not guess.
+- For dish modifications ("without X", "with extra Y", "sugar-free", etc.),
+  accept them and include them in the order confirmation.
+- IMPORTANT: do NOT discuss delivery, pickup, table reservations, payment
+  methods, or anything beyond the 3 intents and opening hours — those
+  features will come later.
+- After an order, only confirm the items (with modifications) and the total.
+  Do not ask about delivery, pickup, or payment.
 """
 
 
@@ -56,12 +66,26 @@ def load_config(path: Path = CONFIG_PATH) -> dict:
         return yaml.safe_load(f)
 
 
-def format_menu(menu: list[dict], currency: str) -> str:
+def fetch_dishes(api_base_url: str) -> list[dict]:
+    response = requests.get(f"{api_base_url}/api/dishes", timeout=5)
+    response.raise_for_status()
+    return response.json()
+
+
+def format_menu(dishes: list[dict], currency: str) -> str:
+    by_category: dict[str, list[dict]] = {}
+    for dish in dishes:
+        by_category.setdefault(dish["category"], []).append(dish)
+
     lines: list[str] = []
-    for category in menu:
-        lines.append(f"{category['category']}:")
-        for item in category["items"]:
+    for category, items in by_category.items():
+        lines.append(f"{category}:")
+        for item in items:
+            allergens = ", ".join(item["allergens"]) if item["allergens"] else "none"
+            ingredients = ", ".join(item["ingredients"])
             lines.append(f"- {item['name']} — {item['price']} {currency}")
+            lines.append(f"    ingredients: {ingredients}")
+            lines.append(f"    allergens: {allergens}")
     return "\n".join(lines)
 
 
@@ -69,11 +93,12 @@ def format_hours(hours: dict) -> str:
     return "\n".join(f"- {day.capitalize()}: {time}" for day, time in hours.items())
 
 
-def build_system_prompt(config: dict) -> str:
+def build_system_prompt(config: dict, dishes: list[dict]) -> str:
     return PROMPT_TEMPLATE.format(
         name=config["restaurant"]["name"],
         hours=format_hours(config["opening_hours"]),
-        menu=format_menu(config["menu"], config["currency"]),
+        menu=format_menu(dishes, config["currency"]),
+        api_base=config["api"]["base_url"],
     )
 
 
@@ -89,10 +114,20 @@ def ask_model(history: list[dict]) -> str:
 def chat_loop() -> None:
     config = load_config()
     restaurant_name = config["restaurant"]["name"]
-    system_prompt = build_system_prompt(config)
+    api_base_url = config["api"]["base_url"]
+
+    try:
+        dishes = fetch_dishes(api_base_url)
+    except requests.RequestException as e:
+        print(f"[Cannot reach Flask API at {api_base_url}] {e}")
+        print("Start it first: `cd flask-api && python app.py`")
+        return
+
+    system_prompt = build_system_prompt(config, dishes)
 
     print("=" * 60)
     print(f"  '{restaurant_name}' chatbot  (model: {MODEL_NAME})")
+    print(f"  Loaded {len(dishes)} dishes from {api_base_url}")
     print("  Type 'exit' or press Ctrl+C to quit.")
     print("=" * 60)
 
