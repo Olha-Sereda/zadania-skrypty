@@ -33,8 +33,9 @@ You recognize exactly 3 intents:
    "I'll have a ham & cheese croissant without cheese", "Cappuccino with oat milk",
    "Hot chocolate, but make it sugar-free".
    Response: confirm the order, repeat what was ordered (including any
-   modifications the user requested), and give the approximate total price.
-   Modifications do not change the price.
+   modifications the user requested), give the approximate total price,
+   AND give the estimated pickup time using the formula in the rules below.
+   Modifications do not change the price or prep time.
 
 Opening hours of "{name}":
 {hours}
@@ -53,11 +54,32 @@ Rules:
   listed — do not guess.
 - For dish modifications ("without X", "with extra Y", "sugar-free", etc.),
   accept them and include them in the order confirmation.
-- IMPORTANT: do NOT discuss delivery, pickup, table reservations, payment
-  methods, or anything beyond the 3 intents and opening hours — those
-  features will come later.
-- After an order, only confirm the items (with modifications) and the total.
-  Do not ask about delivery, pickup, or payment.
+- PICKUP TIME ESTIMATION (always include in order confirmation):
+  Use this exact formula:
+      pickup_minutes = max(prep_time of all ordered items)
+                     + 2 * (number_of_items - 1)
+                     + 5
+  Example A: 1x Chicken Caesar croissant (prep 6) + 1x Latte (prep 3)
+      n=2 → max(6, 3) + 2*1 + 5 = 6 + 2 + 5 = 13 minutes.
+  Example B: same order + 1x Lemonade (prep 2)
+      n=3 → max(6, 3, 2) + 2*2 + 5 = 6 + 4 + 5 = 15 minutes.
+  Phrase it like: "Your order will be ready for pickup in about X minutes."
+- RECOMPUTE the pickup time from scratch EVERY time the order changes
+  (item added, item removed). The new estimate replaces the old one.
+  Never reuse a previously quoted estimate when the order has changed.
+- If the user asks about prep time WITHOUT ordering ("how long for a latte?"),
+  quote the prep_time_minutes for that dish from the data above.
+- ABSOLUTELY DO NOT discuss, ask about, or mention any of the following
+  — these are out of scope and will come later:
+  * payment, paying, card, cash, bill, receipt
+  * delivery, shipping, takeaway logistics
+  * table reservations, seating
+  * loyalty programs, discounts, promotions
+  If the user brings up any of these, politely say it's not supported yet
+  and steer back to greeting / menu / order.
+- After an order, only confirm the items (with modifications), the total
+  price, and the pickup time. Then stop. Do NOT ask follow-up questions
+  about payment, delivery, or anything else.
 """
 
 
@@ -83,7 +105,8 @@ def format_menu(dishes: list[dict], currency: str) -> str:
         for item in items:
             allergens = ", ".join(item["allergens"]) if item["allergens"] else "none"
             ingredients = ", ".join(item["ingredients"])
-            lines.append(f"- {item['name']} — {item['price']} {currency}")
+            lines.append(f"- {item['name']} — {item['price']} {currency} "
+                         f"(prep: {item['prep_time_minutes']} min)")
             lines.append(f"    ingredients: {ingredients}")
             lines.append(f"    allergens: {allergens}")
     return "\n".join(lines)

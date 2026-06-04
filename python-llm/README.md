@@ -13,7 +13,9 @@ Czatbot kawiarni "Lviv Croissants" oparty o **lokalny** model językowy
 - ✅ **4.0** — dane o daniach (skład, alergeny, ceny) ciągnięte z lokalnego
   API Flaska. Czatbot odpowiada na pytania o alergeny i akceptuje modyfikacje
   zamówienia ("bez sera", "z mlekiem owsianym").
-- ⏳ 4.5 — estymacja czasu odbioru.
+- ✅ **4.5** — czatbot szacuje i informuje o czasie odbioru zamówienia.
+  Każde danie ma `prep_time_minutes`; nowy endpoint `POST /api/estimate`
+  zwraca minuty wg wzoru `max(prep) + 2*(n-1) + 5`.
 - ⏳ 5.0 — adres dostawy + zapis zamówienia w bazie przez Flask.
 
 ---
@@ -138,6 +140,10 @@ Bot: Order confirmed:
   - Chicken Caesar croissant (no Caesar dressing) — 23 PLN
   - Latte (oat milk) — 15 PLN
   Total: 38 PLN.
+  Your order will be ready for pickup in about 13 minutes.
+
+You: How long for just a lemonade?
+Bot: A lemonade takes about 2 minutes to prepare.
 ```
 
 Zakończenie rozmowy: `exit` lub `Ctrl+C`.
@@ -187,6 +193,30 @@ Przepływ przy starcie czatbota:
    typu _"bez sosu, z mlekiem owsianym"_ w zamówieniu.
 
 Więcej o samym API: zobacz `flask-api/README.md`.
+
+### Zakres 4.5 — estymacja czasu odbioru
+
+Każde danie w `data.json` ma teraz pole `prep_time_minutes`. Czas odbioru
+całego zamówienia liczymy ze wzoru:
+
+```
+minutes = max(prep_time wszystkich pozycji) + 2 * (n_pozycji - 1) + 5
+```
+
+- `max(prep_time)` — najdłuższa pojedyncza pozycja (zakładamy równoległe
+  przygotowywanie)
+- `2 * (n - 1)` — 2 minuty dodatkowo na każdą następną pozycję
+- `+ 5` — stały bufor kolejki
+
+W kodzie:
+
+- **Źródło prawdy:** Flask, endpoint `POST /api/estimate` (można wołać
+  zewnętrznie, zwraca minuty + breakdown).
+- **W rozmowie:** prep_time każdego dania jest wstrzykiwany do promptu;
+  sam model liczy formułę i podaje wynik w potwierdzeniu zamówienia
+  (LLM radzi sobie z prostą arytmetyką dla typowych zamówień).
+
+Dokładniejszy opis endpointu i przykłady curl: `flask-api/README.md`.
 
 ## Najczęstsze problemy
 

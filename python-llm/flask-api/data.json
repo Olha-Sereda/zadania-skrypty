@@ -4,6 +4,7 @@
     "name": "Chocolate croissant",
     "category": "Sweet croissants",
     "price": 15,
+    "prep_time_minutes": 4,
     "ingredients": ["croissant dough", "dark chocolate", "butter", "sugar"],
     "allergens": ["gluten", "dairy", "eggs"]
   },
@@ -12,6 +13,7 @@
     "name": "Nutella & banana croissant",
     "category": "Sweet croissants",
     "price": 17,
+    "prep_time_minutes": 4,
     "ingredients": ["croissant dough", "Nutella", "banana", "butter"],
     "allergens": ["gluten", "dairy", "eggs", "nuts"]
   },
@@ -20,6 +22,7 @@
     "name": "Apple & cinnamon croissant",
     "category": "Sweet croissants",
     "price": 16,
+    "prep_time_minutes": 4,
     "ingredients": ["croissant dough", "apples", "cinnamon", "sugar", "butter"],
     "allergens": ["gluten", "dairy", "eggs"]
   },
@@ -28,6 +31,7 @@
     "name": "Raspberry croissant",
     "category": "Sweet croissants",
     "price": 16,
+    "prep_time_minutes": 4,
     "ingredients": ["croissant dough", "raspberry jam", "butter", "powdered sugar"],
     "allergens": ["gluten", "dairy", "eggs"]
   },
@@ -36,6 +40,7 @@
     "name": "Ham & cheese croissant",
     "category": "Savory croissants",
     "price": 19,
+    "prep_time_minutes": 6,
     "ingredients": ["croissant dough", "ham", "cheddar cheese", "butter"],
     "allergens": ["gluten", "dairy", "eggs"]
   },
@@ -44,6 +49,7 @@
     "name": "Chicken Caesar croissant",
     "category": "Savory croissants",
     "price": 23,
+    "prep_time_minutes": 6,
     "ingredients": ["croissant dough", "grilled chicken", "romaine lettuce", "parmesan", "Caesar dressing"],
     "allergens": ["gluten", "dairy", "eggs", "fish"]
   },
@@ -52,6 +58,7 @@
     "name": "Salmon & cream cheese croissant",
     "category": "Savory croissants",
     "price": 25,
+    "prep_time_minutes": 6,
     "ingredients": ["croissant dough", "smoked salmon", "cream cheese", "dill", "capers"],
     "allergens": ["gluten", "dairy", "eggs", "fish"]
   },
@@ -60,6 +67,7 @@
     "name": "Mushroom & cheese croissant",
     "category": "Savory croissants",
     "price": 21,
+    "prep_time_minutes": 6,
     "ingredients": ["croissant dough", "sauteed mushrooms", "mozzarella", "garlic", "butter"],
     "allergens": ["gluten", "dairy", "eggs"]
   },
@@ -68,6 +76,7 @@
     "name": "Espresso",
     "category": "Drinks",
     "price": 10,
+    "prep_time_minutes": 2,
     "ingredients": ["arabica coffee beans", "water"],
     "allergens": []
   },
@@ -76,6 +85,7 @@
     "name": "Cappuccino",
     "category": "Drinks",
     "price": 14,
+    "prep_time_minutes": 3,
     "ingredients": ["espresso", "steamed milk", "milk foam"],
     "allergens": ["dairy"]
   },
@@ -84,6 +94,7 @@
     "name": "Latte",
     "category": "Drinks",
     "price": 15,
+    "prep_time_minutes": 3,
     "ingredients": ["espresso", "steamed milk"],
     "allergens": ["dairy"]
   },
@@ -92,6 +103,7 @@
     "name": "Hot chocolate",
     "category": "Drinks",
     "price": 16,
+    "prep_time_minutes": 4,
     "ingredients": ["cocoa", "milk", "sugar"],
     "allergens": ["dairy"]
   },
@@ -100,6 +112,7 @@
     "name": "Lemonade",
     "category": "Drinks",
     "price": 14,
+    "prep_time_minutes": 2,
     "ingredients": ["water", "lemon juice", "sugar", "mint"],
     "allergens": []
   }
