@@ -42,7 +42,7 @@ Czatbot restauracji z lokalnym modelem językowym (Ollama + `llama3.2`, klient `
 
 ✅ 4.0 Dane (alergie, składniki, dania) z API aplikacji Flask + obsługa modyfikacji zamówień [Link do commita 3](https://github.com/Olha-Sereda/zadania-skrypty/commit/8ae7e76)
 
-⏳ 4.5 Estymacja czasu odbioru zamówienia
+✅ 4.5 Estymacja czasu odbioru zamówienia (endpoint `POST /api/estimate` + formuła w promptcie) [Link do commita 4](https://github.com/Olha-Sereda/zadania-skrypty/commit/7f76e0e)
 
 ⏳ 5.0 Adres dostawy + zapis zamówienia w bazie przez API Flask
 
