@@ -76,7 +76,7 @@ Kod: [Link do zadania 4](https://github.com/Olha-Sereda/zadania-skrypty/tree/mai
 
 ✅ 3.5 Fetch basic product data by keywords [Link to commit 2](https://github.com/Olha-Sereda/zadania-skrypty/commit/609b955)
 
-⏳ 4.0 Extend product data with details visible only on the product page
+✅ 4.0 Extend product data with details visible only on the product page
 
 ⏳ 4.5 Store product links
 

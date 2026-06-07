@@ -15,6 +15,17 @@ The scraper uses the [Amazon Best Sellers: Movies & TV](https://www.amazon.com/b
 
 Fetch basic product data by keyword. Pass a keyword as a command-line argument to filter scraped Amazon products by title.
 
+## Scope 4.0
+
+Extend product data with details visible only on each product page:
+
+- rating
+- media format
+- run time
+- release date
+- actors
+- studio
+
 ## Run
 
 ```bash
@@ -33,7 +44,12 @@ Example output:
 Products from Amazon Best Sellers: Movies & TV category:
 
 1. Killers of the Flower Moon (The Criterion Collection) [4K UHD] - PLN 122.34
-2. Heated Rivalry: Season One (Collector's Edition - 4K / Blu-ray) - PLN 313.08
+   Rating: 4.6 out of 5 stars
+   Media Format: 4K, Subtitled
+   Run time: 3 hours and 26 minutes
+   Release date: March 24, 2026
+   Actors: Leonardo DiCaprio, Lily Gladstone, Martin Scorsese, Robert De Niro
+   Studio: The Criterion Collection
 ```
 
 Keyword output:
