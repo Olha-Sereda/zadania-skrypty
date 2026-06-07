@@ -22,6 +22,18 @@ To repozytorium zawiera różne zadania w osobnych folderach.
 - `ruby-nokogiri-scraper/` — Task 5: product scraper in Ruby with Nokogiri
   - Instructions: `ruby-nokogiri-scraper/README.md`
 
+## Zadanie 1 Bash
+
+Gra kółko i krzyżyk w Bashu.
+
+✅ 3.0 Tryb gry turowej dla dwóch graczy [Link do commita 1](https://github.com/Olha-Sereda/zadania-skrypty/commit/fe9d533)
+
+✅ 4.0 Zapis i odtwarzanie przerwanej gry [Link do commita 2](https://github.com/Olha-Sereda/zadania-skrypty/commit/22a5894)
+
+⏳ 5.0 Gra z komputerem
+
+Kod: [Link do zadania 1](https://github.com/Olha-Sereda/zadania-skrypty/tree/main/bash)
+
 ## Zadanie 2 Sklep
 
 Sklep w ReactJS + NodeJS
