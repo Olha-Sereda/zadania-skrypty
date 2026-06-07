@@ -72,9 +72,9 @@ Kod: [Link do zadania 4](https://github.com/Olha-Sereda/zadania-skrypty/tree/mai
 
 ## Task 5 Ruby Nokogiri Scraper
 
-✅ 3.0 Fetch basic Amazon product data (title, price) from any category
+✅ 3.0 Fetch basic Amazon product data (title, price) from any category [Link to commit 1](https://github.com/Olha-Sereda/zadania-skrypty/commit/fd9b68c)
 
-✅ 3.5 Fetch basic product data by keywords
+✅ 3.5 Fetch basic product data by keywords [Link to commit 2](https://github.com/Olha-Sereda/zadania-skrypty/commit/609b955)
 
 ⏳ 4.0 Extend product data with details visible only on the product page
 
