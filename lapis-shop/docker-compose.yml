@@ -1,0 +1,39 @@
+services:
+  app:
+    build: .
+    container_name: lapis-shop-app
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+      - lapis_uploads:/app/static/uploads
+    environment:
+      LAPIS_ENVIRONMENT: development
+      POSTGRES_HOST: db
+      POSTGRES_USER: lapis_shop
+      POSTGRES_PASSWORD: lapis_shop
+      POSTGRES_DB: lapis_shop
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    container_name: lapis-shop-db
+    environment:
+      POSTGRES_USER: lapis_shop
+      POSTGRES_PASSWORD: lapis_shop
+      POSTGRES_DB: lapis_shop
+    ports:
+      - "5433:5432"
+    volumes:
+      - lapis_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lapis_shop -d lapis_shop"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  lapis_db:
+  lapis_uploads:

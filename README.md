@@ -16,6 +16,9 @@ To repozytorium zawiera różne zadania w osobnych folderach.
 - `python-llm/` — Zadanie 3: Czatbot z lokalnym modelem językowym (Ollama + Python)
   - Instrukcja uruchomienia: `python-llm/README.md`
 
+- `lapis-shop/` — Zadanie 4: REST API sklepu (Lua/MoonScript + Lapis)
+  - Instrukcja uruchomienia: `lapis-shop/README.md`
+
 ## Zadanie 2 Sklep
 
 Sklep w ReactJS + NodeJS
@@ -47,3 +50,19 @@ Czatbot restauracji z lokalnym modelem językowym (Ollama + `llama3.2`, klient `
 ⏳ 5.0 Adres dostawy + zapis zamówienia w bazie przez API Flask
 
 Kod: [Link do zadania 3](https://github.com/Olha-Sereda/zadania-skrypty/tree/main/python-llm)
+
+## Zadanie 4 Lapis (Lua/MoonScript)
+
+REST API sklepu na bazie frameworka [Lapis](https://leafo.net/lapis/).
+
+⏳ 3.0 Endpointy CRUD dla kategorii i produktów na listach in-memory, odpowiedzi w JSON
+
+⏳ 3.5 Modele oparte o `lapis.db.model` (PostgreSQL)
+
+⏳ 4.0 Cała aplikacja przepisana na MoonScript
+
+⏳ 4.5 Upload obrazów produktów (`static/uploads/`) + zwracany URL w JSON
+
+⏳ 5.0 20 testów w [Busted](https://github.com/lunarmodules/busted)
+
+Kod: [Link do zadania 4](https://github.com/Olha-Sereda/zadania-skrypty/tree/main/lapis-shop)

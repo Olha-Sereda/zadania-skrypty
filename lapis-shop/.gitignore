@@ -1,0 +1,6 @@
+logs/*
+!logs/.gitkeep
+nginx.conf.compiled
+*.pid
+static/uploads/*
+!static/uploads/.gitkeep
