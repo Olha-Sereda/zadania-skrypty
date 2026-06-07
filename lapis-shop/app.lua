@@ -2,7 +2,9 @@ local lapis = require "lapis"
 local app_helpers = require "lapis.application"
 local json_params = app_helpers.json_params
 local validate = require "lapis.validate"
-local store = require "store"
+local cjson = require "cjson"
+local Category = require "models.Category"
+local Product = require "models.Product"
 
 local app = lapis.Application()
 
@@ -10,10 +12,29 @@ local function not_found()
   return { status = 404, json = { error = "not found" } }
 end
 
+local function cat_json(c)
+  return { id = c.id, name = c.name }
+end
+
+local function prod_json(p)
+  return {
+    id = p.id,
+    name = p.name,
+    price = tonumber(p.price),
+    category_id = p.category_id,
+  }
+end
+
+local function jsonify(list, fn)
+  local out = setmetatable({}, cjson.empty_array_mt)
+  for i, item in ipairs(list) do out[i] = fn(item) end
+  return out
+end
+
 app:get("/", function()
   return { json = {
     service = "lapis-shop",
-    stage = "3.0",
+    stage = "3.5",
     endpoints = {
       "GET    /api/categories",
       "POST   /api/categories",
@@ -30,7 +51,7 @@ app:get("/", function()
 end)
 
 app:get("/api/categories", function()
-  return { json = store.list_categories() }
+  return { json = jsonify(Category:select("order by id"), cat_json) }
 end)
 
 app:post("/api/categories", json_params(function(self)
@@ -38,29 +59,34 @@ app:post("/api/categories", json_params(function(self)
     { "name", exists = true, min_length = 1, max_length = 100 },
   })
   if errs then return { status = 422, json = { errors = errs } } end
-  return { status = 201, json = store.create_category({ name = self.params.name }) }
+  local c = Category:create({ name = self.params.name })
+  return { status = 201, json = cat_json(c) }
 end))
 
 app:get("/api/categories/:id", function(self)
   local id = tonumber(self.params.id)
-  local c = id and store.get_category(id)
+  local c = id and Category:find(id)
   if not c then return not_found() end
-  return { json = c }
+  return { json = cat_json(c) }
 end)
 
 app:put("/api/categories/:id", json_params(function(self)
   local id = tonumber(self.params.id)
-  if not id or not store.get_category(id) then return not_found() end
+  local c = id and Category:find(id)
+  if not c then return not_found() end
   local errs = validate.validate(self.params, {
     { "name", exists = true, min_length = 1, max_length = 100 },
   })
   if errs then return { status = 422, json = { errors = errs } } end
-  return { json = store.update_category(id, { name = self.params.name }) }
+  c:update({ name = self.params.name })
+  return { json = cat_json(c) }
 end))
 
 app:delete("/api/categories/:id", function(self)
   local id = tonumber(self.params.id)
-  if not id or not store.delete_category(id) then return not_found() end
+  local c = id and Category:find(id)
+  if not c then return not_found() end
+  c:delete()
   return { status = 204, layout = false }
 end)
 
@@ -81,7 +107,7 @@ local function check_product(p, full)
   end
   if p.category_id ~= nil and p.category_id ~= "" then
     local cid = tonumber(p.category_id)
-    if not cid or not store.get_category(cid) then
+    if not cid or not Category:find(cid) then
       errs[#errs+1] = "category_id does not reference an existing category"
     else
       p.category_id = cid
@@ -94,33 +120,52 @@ end
 
 app:get("/api/products", function(self)
   local cid = tonumber(self.params.category_id)
-  return { json = store.list_products(cid) }
+  local rows
+  if cid then
+    rows = Product:select("where category_id = ? order by id", cid)
+  else
+    rows = Product:select("order by id")
+  end
+  return { json = jsonify(rows, prod_json) }
 end)
 
 app:post("/api/products", json_params(function(self)
   local errs = check_product(self.params, true)
   if errs then return { status = 422, json = { errors = errs } } end
-  return { status = 201, json = store.create_product(self.params) }
+  local p = Product:create({
+    name = self.params.name,
+    price = self.params.price,
+    category_id = self.params.category_id,
+  })
+  return { status = 201, json = prod_json(p) }
 end))
 
 app:get("/api/products/:id", function(self)
   local id = tonumber(self.params.id)
-  local p = id and store.get_product(id)
+  local p = id and Product:find(id)
   if not p then return not_found() end
-  return { json = p }
+  return { json = prod_json(p) }
 end)
 
 app:put("/api/products/:id", json_params(function(self)
   local id = tonumber(self.params.id)
-  if not id or not store.get_product(id) then return not_found() end
+  local p = id and Product:find(id)
+  if not p then return not_found() end
   local errs = check_product(self.params, false)
   if errs then return { status = 422, json = { errors = errs } } end
-  return { json = store.update_product(id, self.params) }
+  local patch = {}
+  if self.params.name ~= nil then patch.name = self.params.name end
+  if self.params.price ~= nil then patch.price = self.params.price end
+  if self.params.category_id ~= nil then patch.category_id = self.params.category_id end
+  if next(patch) then p:update(patch) end
+  return { json = prod_json(p) }
 end))
 
 app:delete("/api/products/:id", function(self)
   local id = tonumber(self.params.id)
-  if not id or not store.delete_product(id) then return not_found() end
+  local p = id and Product:find(id)
+  if not p then return not_found() end
+  p:delete()
   return { status = 204, layout = false }
 end)
 

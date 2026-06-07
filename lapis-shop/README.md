@@ -5,9 +5,10 @@ REST API małego sklepu (kategorie + produkty) zbudowane na frameworku
 
 ## Status realizacji progów
 
-- ⏳ **3.0** — Endpointy CRUD dla `categories` i `products` na listach
-  (in‑memory), odpowiedzi w JSON.
-- ⏳ **3.5** — Modele oparte o `lapis.db.model` + migracje PostgreSQL.
+- ✅ **3.0** — Endpointy CRUD dla `categories` i `products` na listach
+  (in‑memory w `ngx.shared.dict`), odpowiedzi w JSON.
+- ✅ **3.5** — Modele oparte o `lapis.db.model` + migracje PostgreSQL,
+  FK z `ON DELETE SET NULL`.
 - ⏳ **4.0** — Przepisane na MoonScript.
 - ⏳ **4.5** — Upload obrazów produktów (`POST /api/products/:id/image`),
   zapis w `static/uploads/`, zwrot URL w JSON.
@@ -25,6 +26,12 @@ docker compose up --build
 
 - API: `http://127.0.0.1:8080`
 - PostgreSQL: `127.0.0.1:5433` (`lapis_shop` / `lapis_shop` / db `lapis_shop`)
+
+Po pierwszym `up` trzeba odpalić migracje:
+
+```bash
+docker compose exec app lapis migrate
+```
 
 Kod jest bind-mountowany do kontenera, więc edycja plików `.lua`/`.moon`
 przeładowuje się automatycznie (`code_cache = "off"`).
