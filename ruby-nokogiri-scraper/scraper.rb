@@ -30,10 +30,25 @@ def scrape_products(document)
   end.compact
 end
 
+def filter_products_by_keyword(products, keyword)
+  normalized_keyword = keyword.downcase.strip
+
+  products.select do |product|
+    product[:title].downcase.include?(normalized_keyword)
+  end
+end
+
 document = fetch_document(CATEGORY_URL)
 products = scrape_products(document)
+keyword = ARGV.join(" ").strip
 
-puts "Products from #{CATEGORY_NAME} category:"
+if keyword.empty?
+  puts "Products from #{CATEGORY_NAME} category:"
+else
+  products = filter_products_by_keyword(products, keyword)
+  puts "Products from #{CATEGORY_NAME} category matching \"#{keyword}\":"
+end
+
 puts
 
 products.each_with_index do |product, index|

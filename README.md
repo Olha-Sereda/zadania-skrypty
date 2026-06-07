@@ -74,7 +74,7 @@ Kod: [Link do zadania 4](https://github.com/Olha-Sereda/zadania-skrypty/tree/mai
 
 ✅ 3.0 Fetch basic Amazon product data (title, price) from any category
 
-⏳ 3.5 Fetch basic product data by keywords
+✅ 3.5 Fetch basic product data by keywords
 
 ⏳ 4.0 Extend product data with details visible only on the product page
 
