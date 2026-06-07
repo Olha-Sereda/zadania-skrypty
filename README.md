@@ -19,6 +19,9 @@ To repozytorium zawiera różne zadania w osobnych folderach.
 - `lapis-shop/` — Zadanie 4: REST API sklepu (Lua/MoonScript + Lapis)
   - Instrukcja uruchomienia: `lapis-shop/README.md`
 
+- `ruby-nokogiri-scraper/` — Task 5: product scraper in Ruby with Nokogiri
+  - Instructions: `ruby-nokogiri-scraper/README.md`
+
 ## Zadanie 2 Sklep
 
 Sklep w ReactJS + NodeJS
@@ -66,3 +69,17 @@ REST API sklepu na bazie frameworka [Lapis](https://leafo.net/lapis/).
 ⏳ 5.0 20 testów w [Busted](https://github.com/lunarmodules/busted)
 
 Kod: [Link do zadania 4](https://github.com/Olha-Sereda/zadania-skrypty/tree/main/lapis-shop)
+
+## Task 5 Ruby Nokogiri Scraper
+
+✅ 3.0 Fetch basic Amazon product data (title, price) from any category
+
+⏳ 3.5 Fetch basic product data by keywords
+
+⏳ 4.0 Extend product data with details visible only on the product page
+
+⏳ 4.5 Store product links
+
+⏳ 5.0 Save data in a database, for example SQLite via Sequel
+
+Code: [Link to task 5](https://github.com/Olha-Sereda/zadania-skrypty/tree/main/ruby-nokogiri-scraper)
