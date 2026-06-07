@@ -55,11 +55,11 @@ Kod: [Link do zadania 3](https://github.com/Olha-Sereda/zadania-skrypty/tree/mai
 
 REST API sklepu na bazie frameworka [Lapis](https://leafo.net/lapis/).
 
-⏳ 3.0 Endpointy CRUD dla kategorii i produktów na listach in-memory, odpowiedzi w JSON
+✅ 3.0 Endpointy CRUD dla kategorii i produktów na listach in-memory, odpowiedzi w JSON [Link do commita 1](https://github.com/Olha-Sereda/zadania-skrypty/commit/583ecfc)
 
-⏳ 3.5 Modele oparte o `lapis.db.model` (PostgreSQL)
+✅ 3.5 Modele oparte o `lapis.db.model` (PostgreSQL) [Link do commita 2](https://github.com/Olha-Sereda/zadania-skrypty/commit/0dafa49)
 
-⏳ 4.0 Cała aplikacja przepisana na MoonScript
+✅ 4.0 Cała aplikacja przepisana na MoonScript (`app.moon`, `migrations.moon`, `models/*.moon`)
 
 ⏳ 4.5 Upload obrazów produktów (`static/uploads/`) + zwracany URL w JSON
 

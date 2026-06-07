@@ -9,7 +9,8 @@ REST API małego sklepu (kategorie + produkty) zbudowane na frameworku
   (in‑memory w `ngx.shared.dict`), odpowiedzi w JSON.
 - ✅ **3.5** — Modele oparte o `lapis.db.model` + migracje PostgreSQL,
   FK z `ON DELETE SET NULL`.
-- ⏳ **4.0** — Przepisane na MoonScript.
+- ✅ **4.0** — Przepisane na MoonScript (`app.moon`, `migrations.moon`,
+  `models/*.moon`); skompilowane do `.lua` przez `moonc` przy starcie kontenera.
 - ⏳ **4.5** — Upload obrazów produktów (`POST /api/products/:id/image`),
   zapis w `static/uploads/`, zwrot URL w JSON.
 - ⏳ **5.0** — 20 testów w [Busted](https://github.com/lunarmodules/busted).
@@ -57,7 +58,7 @@ lapis server development
 > aktualnego Xcode / Command Line Tools — stąd ścieżka z Dockerem jest
 > wygodniejsza.
 
-## Endpointy (3.0)
+## Endpointy
 
 | Metoda | URL                   | Opis                                           |
 | ------ | --------------------- | ---------------------------------------------- |
@@ -109,8 +110,11 @@ curl -s -X DELETE http://127.0.0.1:8080/api/products/1
 
 ```
 lapis-shop/
-├── app.lua                       # router + handlery (3.0 — listy in-memory)
-├── store.lua                     # in-memory storage (zniknie w 3.5)
+├── app.moon                      # router + handlery (MoonScript, od 4.0)
+├── migrations.moon               # migracje DB (MoonScript, od 4.0)
+├── models/
+│   ├── Category.moon             # model kategorii (lapis.db.model)
+│   └── Product.moon              # model produktu
 ├── config.lua                    # konfiguracja środowisk Lapis (env-aware)
 ├── nginx.conf                    # konfiguracja OpenResty
 ├── mime.types
@@ -120,3 +124,6 @@ lapis-shop/
 ├── logs/                         # nginx.pid, error.log (ignorowane)
 └── static/uploads/               # docelowe miejsce zapisu obrazów (4.5)
 ```
+
+> **Uwaga (4.0):** Pliki `*.lua` generowane przez `moonc` są w `.gitignore`.
+> Kompilacja odbywa się automatycznie przy starcie kontenera Docker.

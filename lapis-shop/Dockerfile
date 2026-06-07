@@ -23,4 +23,4 @@ WORKDIR /app
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "mkdir -p logs static/uploads && exec lapis server ${LAPIS_ENVIRONMENT:-development}"]
+CMD ["sh", "-c", "mkdir -p logs static/uploads && moonc app.moon migrations.moon models/*.moon && exec lapis server ${LAPIS_ENVIRONMENT:-development}"]

@@ -4,3 +4,8 @@ nginx.conf.compiled
 *.pid
 static/uploads/*
 !static/uploads/.gitkeep
+
+# Generated from .moon by moonc on container start
+app.lua
+migrations.lua
+models/*.lua
