@@ -26,6 +26,10 @@ Extend product data with details visible only on each product page:
 - actors
 - studio
 
+## Scope 4.5
+
+Store product links as absolute Amazon URLs and print them with each product.
+
 ## Run
 
 ```bash
@@ -44,6 +48,7 @@ Example output:
 Products from Amazon Best Sellers: Movies & TV category:
 
 1. Killers of the Flower Moon (The Criterion Collection) [4K UHD] - PLN 122.34
+   Link: https://www.amazon.com/Killers-Flower-Moon-Criterion-Collection/dp/B0G83WCTWF/...
    Rating: 4.6 out of 5 stars
    Media Format: 4K, Subtitled
    Run time: 3 hours and 26 minutes

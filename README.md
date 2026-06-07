@@ -78,7 +78,7 @@ Kod: [Link do zadania 4](https://github.com/Olha-Sereda/zadania-skrypty/tree/mai
 
 ✅ 4.0 Extend product data with details visible only on the product page
 
-⏳ 4.5 Store product links
+✅ 4.5 Store product links
 
 ⏳ 5.0 Save data in a database, for example SQLite via Sequel
 

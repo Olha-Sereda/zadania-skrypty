@@ -90,6 +90,7 @@ puts
 
 products.each_with_index do |product, index|
   puts "#{index + 1}. #{product[:title]} - #{product[:price]}"
+  puts "   Link: #{product[:product_url]}"
 
   product[:details].each do |name, value|
     puts "   #{name}: #{value}"
